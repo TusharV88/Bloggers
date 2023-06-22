@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': 'Bloggers',
         'PORT': 27017,
         'CLIENT': {
-            'host': f'mongodb://{MongoUser}:{MongoPass}@cluster0.y1argup.mongodb.net/?retryWrites=true&w=majority',
+            'host': f'mongodb+srv://{MongoUser}:{MongoPass}@cluster0.y1argup.mongodb.net/?retryWrites=true&w=majority',
             'username': MongoUser,
             'password': MongoPass,
             'authSource': 'admin',
