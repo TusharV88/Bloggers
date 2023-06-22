@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Edit Post</title>
+{% endblock title %}
+
+{% block content %}
+<h1 class="text-center my-5 display-4 fw-bold">Edit your Blog Post</h1>
+
+<form action="{% url 'edit_post' id %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock content %}
