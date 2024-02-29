@@ -10,6 +10,7 @@ class SignUpForm(UserCreationForm):
     password2 = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control'}), label='Confirm Password')
 
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name',

@@ -24,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^8^f1d%94&y*y+%)z%!6b%129%vxl8uv4hrb*@k27^_44o8**&'
+SECRET_KEY = os.environ.get('DJSECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['https://www.bloggers.onrender.com']
 
 
 # Application definition
@@ -81,18 +81,18 @@ WSGI_APPLICATION = 'Blog_Project.wsgi.application'
 MongoPass = os.environ.get('MONGODB_PASS')
 MongoUser = os.environ.get('MONGODB_USER')
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'ENFORCE_SCHEMA': False,
         'NAME': 'Bloggers',
-        'PORT': 27017,
         'CLIENT': {
-            'host': f'mongodb+srv://{MongoUser}:{MongoPass}@cluster0.y1argup.mongodb.net/?retryWrites=true&w=majority',
+            'host': f'mongodb+srv://{MongoUser}:{MongoPass}@cluster0.y1argup.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            'port': 27017,
             'username': MongoUser,
             'password': MongoPass,
             'authSource': 'admin',
+            'authMechanism': 'SCRAM-SHA-1',
         },
     }
 }
