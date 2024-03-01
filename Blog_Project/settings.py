@@ -29,7 +29,8 @@ SECRET_KEY = os.environ.get('DJSECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://bloggers-nfn0.onrender.com']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+
 
 
 # Application definition
