@@ -4,14 +4,20 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import BlogPost
-
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
 def home_page(request):
-    posts = BlogPost.objects.all()
+    try:
+        post = BlogPost.objects.all()
 
-    return render(request, 'blog/home.html', {'posts': posts})
+        return render(request, 'blog/about.html', {'post': post})
+    except ObjectDoesNotExist as e:
+        print(str(e))
+    except Exception as e:
+        print(str(e))
+
 
 
 def about_page(request):
