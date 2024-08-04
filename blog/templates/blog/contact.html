@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Contact</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="col-sm-8">
+    <h1 class="text-center my-5 display-4 fw-bold">Contact Page</h1>
+    <form>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                </div>
+                <div class="col-sm-6 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address">
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="2" placeholder="Enter your message..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

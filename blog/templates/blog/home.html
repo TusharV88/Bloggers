@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Home</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="col-sm-8">
+    <h1 class="text-center my-5 display-4 fw-bold">Home Page</h1>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% else %}
+        {% if posts %}
+        {% for post in posts %}
+        <div class="jumbotron jumbotron-fluid rounded jumbo-col p-2 mb-5">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h1 class="display-6 text-capitalize fw-bolder">{{post.title}}</h1>
+                    <h5 class="text-muted">{{ post.timestamp|date:"F j, Y" }}</h5>
+                </div>
+                <hr class="my-2">
+                <p class="lead">{{post.description}}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="lead">No posts available.</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock content %}

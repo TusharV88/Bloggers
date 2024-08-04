@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Bloggers</a>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'home_page' %}" aria-current="page">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about_page' %}">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'contact_page' %}">Contact</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard_page' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user_logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user_signup' %}">Signup</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user_login' %}">Login</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
