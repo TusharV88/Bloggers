@@ -4,32 +4,27 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import BlogPost
-from django.core.exceptions import ObjectDoesNotExist
-from pymongo.errors import ServerSelectionTimeoutError, ConnectionFailure
-
+from mongoengine.errors import DoesNotExist, ConnectionError
 
 def home_page(request):
     try:
-        post = BlogPost.objects.all()
-        return render(request, 'blog/home.html', {'posts': post})
-    except ObjectDoesNotExist as e:
+        posts = BlogPost.objects.all()
+        return render(request, 'blog/home.html', {'posts': posts})
+    except DoesNotExist as e:
         print(str(e))
         return render(request, 'blog/home.html', {'posts': [], 'error': 'No blog posts found'})
-    except (ServerSelectionTimeoutError, ConnectionFailure) as e:
+    except ConnectionError as e:
         print(str(e))
         return render(request, 'blog/home.html', {'posts': [], 'error': 'Database connection error'})
     except Exception as e:
         print(str(e))
         return render(request, 'blog/home.html', {'posts': [], 'error': 'An error occurred'})
 
-
 def about_page(request):
     return render(request, 'blog/about.html')
 
-
 def contact_page(request):
     return render(request, 'blog/contact.html')
-
 
 def dashboard_page(request):
     if request.user.is_authenticated:
@@ -37,8 +32,6 @@ def dashboard_page(request):
         return render(request, 'blog/dashboard.html', {'posts': posts})
     else:
         return redirect('/login')
-
-
 
 def user_login(request):
     if not request.user.is_authenticated:
@@ -64,9 +57,6 @@ def user_login(request):
     else:
         return redirect('/dashboard')
 
-
-
-
 def user_signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -78,8 +68,7 @@ def user_signup(request):
             pw1 = form.cleaned_data['password1']
             user = User.objects.create_user(username=nm, password=pw1, email=em, first_name=fn, last_name=ln)
             user.save()
-            messages.success(
-                request, 'Account has been created successfully. Now, you can process to login.')
+            messages.success(request, 'Account has been created successfully. Now, you can process to login.')
             return redirect('/login')
         else:
             return render(request, 'blog/signup.html', {'form': form})
@@ -87,12 +76,9 @@ def user_signup(request):
         form = SignUpForm()
     return render(request, 'blog/signup.html', {'form': form})
 
-
 def user_logout(request):
     logout(request)
     return redirect('/')
-
-
 
 def create_post(request):
     if request.user.is_authenticated:
@@ -109,35 +95,30 @@ def create_post(request):
     else:
         return redirect('/login')
 
-
-
-
 def edit_post(request, id):
     if request.user.is_authenticated:
         if request.method == "POST":
-            pi = BlogPost.objects.get(pk=id)
-            fm = PostForm(request.POST, instance=pi)
-            if fm.is_valid():
-                fm.save()
+            post = BlogPost.objects.get(id=id)
+            form = PostForm(request.POST, instance=post)
+            if form.is_valid():
+                post.title = form.cleaned_data['title']
+                post.description = form.cleaned_data['description']
+                post.save()
                 messages.success(request, 'Post has been updated successfully.')
                 return redirect('/dashboard')
         else:
-            pi = BlogPost.objects.get(pk=id)
-            fm = PostForm(instance=pi)
-            return render(request, 'blog/editpost.html', {"form": fm, "id": id})
+            post = BlogPost.objects.get(id=id)
+            form = PostForm(initial={'title': post.title, 'description': post.description})
+            return render(request, 'blog/editpost.html', {"form": form, "id": id})
     else:
         return redirect("/login")
-
-
-
 
 def delete_post(request, id):
     if request.user.is_authenticated:
         if request.method == "POST":
-            pi = BlogPost.objects.get(pk=id)
-            pi.delete()
+            post = BlogPost.objects.get(id=id)
+            post.delete()
             messages.success(request, "Post has been deleted successfully!!")
             return redirect("/dashboard")
-
     else:
         return redirect("/login")

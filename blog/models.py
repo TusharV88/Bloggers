@@ -1,7 +1,7 @@
-from django.utils import timezone
-from django.db import models
+from mongoengine import Document, StringField, DateTimeField
+from datetime import datetime
 
-class BlogPost(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    timestamp = models.DateField(default=timezone.now)
+class BlogPost(Document):
+    title = StringField(max_length=100, required=True)
+    description = StringField(required=True)
+    timestamp = DateTimeField(default=datetime.now)

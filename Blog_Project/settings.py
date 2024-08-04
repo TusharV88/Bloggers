@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from django.contrib.messages import constants as messages_constants
 import dotenv, os
+from mongoengine import connect
 
 dotenv.load_dotenv()
 
@@ -83,19 +84,18 @@ WSGI_APPLICATION = 'Blog_Project.wsgi.application'
 MongoPass = os.environ.get('MONGODB_PASS')
 MongoUser = os.environ.get('MONGODB_USER')
 
+# Connect to MongoDB
+connect(
+    db='Bloggers',
+    username= MongoUser,
+    password= MongoPass,
+    host=f'mongodb+srv://{MongoUser}:{MongoPass}@cluster0.y1argup.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    alias='default'
+)
+
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'ENFORCE_SCHEMA': False,
-        'NAME': 'Bloggers',
-        'CLIENT': {
-            'host': f'mongodb+srv://{MongoUser}:{MongoPass}@cluster0.y1argup.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-            'port': 27017,
-            'username': MongoUser,
-            'password': MongoPass,
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-1',
-        },
+        'ENGINE': 'django.db.backends.dummy'
     }
 }
 
